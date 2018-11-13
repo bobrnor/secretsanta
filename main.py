@@ -1,6 +1,11 @@
 
-import sys
 import random
+
+
+def read_people():
+    with open('people.txt') as f:
+        people = f.readlines()
+    return [p.strip() for p in people]
 
 
 def choose_da_victim(i):
@@ -12,8 +17,14 @@ def choose_da_victim(i):
     else:
         return None
 
-if len(sys.argv) == 2:
-    number_of_victims = int(sys.argv[1])
+
+if __name__ == "__main__":
+    people = read_people()
+    number_of_victims = len(people)
+
+    if number_of_victims < 4:
+        print 'not enough people'
+        exit(0)
 
     origin_set = [i for i in range(number_of_victims)]
     result_set = []
@@ -27,4 +38,4 @@ if len(sys.argv) == 2:
     assert len(result_set) == len(set(result_set))
     assert len(filter(lambda x: x == result_set[x], result_set)) == 0
 
-    print "\n".join([str(i + 1) for i in result_set])
+    print "\n".join([people[idx] + ' -> ' + people[vic_idx] for idx, vic_idx in enumerate(result_set)])
